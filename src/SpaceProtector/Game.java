@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Game extends JPanel {
 	int BOARD_WIDTH = 360;
@@ -38,6 +39,8 @@ public class Game extends JPanel {
 	private boolean start = true;
 	private String str = "Mission Failed!";
 	
+	private Timer timer;
+	
 	public Game() {
 		initializeGame();
 		startGame();
@@ -49,6 +52,8 @@ public class Game extends JPanel {
 		addKeyListener(new TypeAdapter());
 		
 		d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
+		timer = new Timer(1, new GameCycle());
+        timer.start();
 		startGame();
 	}
 	
@@ -129,7 +134,7 @@ public class Game extends JPanel {
 		var ft = new Font("TimesRoman", Font.BOLD, 20);
 		var msgFont = this.getFontMetrics(ft);
 		g.setFont(ft);
-		g.drawString(str, (BOARD_WIDTH - msgFont.stringWidth(str))/3, BOARD_WIDTH/2);
+		g.drawString(str, (BOARD_WIDTH - msgFont.stringWidth(str))/2, BOARD_WIDTH/2);
 	}
 	
 	// game logic
@@ -157,7 +162,7 @@ public class Game extends JPanel {
 				Iterator<Invader> tmp1 = invaders.iterator();
 				while(tmp1.hasNext()) {
 					Invader inv2 = tmp1.next();
-					inv2.setY(inv2.getY() + 20);
+					inv2.setY(inv2.getY() + 5);
 				}
 			}
 			if(tmpInvX <= 0 && pointIn != 1) {
@@ -165,7 +170,7 @@ public class Game extends JPanel {
 				Iterator<Invader> tmp2 = invaders.iterator();
 				while(tmp2.hasNext()) {
 					Invader inv1 = tmp2.next();
-					inv1.setY(inv1.getY() + 20);
+					inv1.setY(inv1.getY() + 5);
 				}
 			}
 		}
@@ -174,7 +179,7 @@ public class Game extends JPanel {
 			Invader inv = tmp.next();
 			if(inv.isShow()) {
 				tmpInvY = inv.getY();
-				if(tmpInvY > 360) {
+				if(tmpInvY > 100) {
 					start = false;
 				}
 				inv.move(pointIn);
@@ -203,6 +208,18 @@ public class Game extends JPanel {
 			}
 		}
 	}
+    
+	private void doGameCycle() {
+		inGame();
+        repaint();
+    }
+
+    private class GameCycle implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            doGameCycle();
+        }
+    }
     
 	private class TypeAdapter extends KeyAdapter {
 		@Override

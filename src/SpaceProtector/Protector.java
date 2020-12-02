@@ -1,7 +1,7 @@
 package SpaceProtector;
 
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 
 public class Protector extends Sprite {
 	
