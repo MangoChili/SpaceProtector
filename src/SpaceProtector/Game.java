@@ -157,7 +157,7 @@ public class Game extends JPanel {
 		// invaders
 		for(int i = 0; i < invaders.size(); i++) {
 			tmpInvX = invaders.get(i).getX();
-			if(tmpInvX >= BOARD_WIDTH - 30 && pointIn != -1) {
+			if(tmpInvX >= BOARD_WIDTH - 100 && pointIn != -1) {
 				pointIn = -1;
 				Iterator<Invader> tmp1 = invaders.iterator();
 				while(tmp1.hasNext()) {
@@ -165,7 +165,7 @@ public class Game extends JPanel {
 					inv2.setY(inv2.getY() + 5);
 				}
 			}
-			if(tmpInvX <= 0 && pointIn != 1) {
+			if(tmpInvX <= 18 && pointIn != 1) {
 				pointIn = 1;
 				Iterator<Invader> tmp2 = invaders.iterator();
 				while(tmp2.hasNext()) {

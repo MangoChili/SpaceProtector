@@ -32,8 +32,8 @@ public class Protector extends Sprite {
         if (x <= 2) {
             x = 2;
         }
-        if (x >= BOARD_WIDTH - 2 * width) {
-            x = BOARD_WIDTH - 2 * width;
+        if (x >= BOARD_WIDTH - width - 18) {
+            x = BOARD_WIDTH - width - 18;
         }
     }
 
