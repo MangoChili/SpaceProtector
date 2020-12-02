@@ -8,9 +8,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -22,6 +25,7 @@ public class Game extends JPanel {
 	int numCol = 3;
 	int invaderX = 120;
 	int invaderY = 10;
+	int mission = 10;
 	
 	private Protector protector;
 	private List<Invader> invaders;
@@ -42,7 +46,7 @@ public class Game extends JPanel {
 	private void initializeGame() {
 		setBackground(Color.black);
 		setFocusable(true);
-		addKeyListener(new TAdapter());
+		addKeyListener(new TypeAdapter());
 		
 		d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
 		startGame();
@@ -72,9 +76,15 @@ public class Game extends JPanel {
 	}
 	
 	private void drawInvaders(Graphics g) {
+		int distance = -30;
 		for(int i = 0; i < invaders.size(); i++) {
 			if(invaders.get(i).isShow()) {
-				g.drawImage(invaders.get(i).getImage(), invaders.get(i).getX(), invaders.get(i).getY(), this);
+				g.drawImage(invaders.get(i).getImage(), invaders.get(i).getX()+distance, invaders.get(i).getY()*3, this);
+				if(i < numCol) {
+					distance += 40;
+				} else {
+					distance -= 80;
+				}
 			}
 			if(invaders.get(i).isDestroyed()) {
 				invaders.get(i).destroy();
@@ -124,10 +134,77 @@ public class Game extends JPanel {
 	
 	// game logic
 	private void inGame() {
+		int tmpInvX;
+		int tmpInvY;
+		int tmpBulX;
+		int tmpBulY;
+		int tmpBInvX;
+		int tmpBInvY;
 		
+		if(kills == mission) {
+			start = false;
+			str = "Mission Acomplished!";
+		}
+		
+		// protector
+		protector.move();
+		
+		// invaders
+		for(int i = 0; i < invaders.size(); i++) {
+			tmpInvX = invaders.get(i).getX();
+			if(tmpInvX >= BOARD_WIDTH - 30 && pointIn != -1) {
+				pointIn = -1;
+				Iterator<Invader> tmp1 = invaders.iterator();
+				while(tmp1.hasNext()) {
+					Invader inv2 = tmp1.next();
+					inv2.setY(inv2.getY() + 20);
+				}
+			}
+			if(tmpInvX <= 0 && pointIn != 1) {
+				pointIn = 1;
+				Iterator<Invader> tmp2 = invaders.iterator();
+				while(tmp2.hasNext()) {
+					Invader inv1 = tmp2.next();
+					inv1.setY(inv1.getY() + 20);
+				}
+			}
+		}
+		Iterator<Invader> tmp = invaders.iterator();
+		while(tmp.hasNext()) {
+			Invader inv = tmp.next();
+			if(inv.isShow()) {
+				tmpInvY = inv.getY();
+				if(tmpInvY > 360) {
+					start = false;
+				}
+				inv.move(pointIn);
+			}
+		}
+		
+		// bullet
+		if(bullet.isShow()) {
+			tmpBulX = bullet.getX();
+			tmpBulY = bullet.getY();
+			for(int i = 0; i < invaders.size(); i++) {
+				tmpBInvX = invaders.get(i).getX();
+				tmpBInvY = invaders.get(i).getY();
+				if(invaders.get(i).isShow()) {
+					if(tmpBulX == tmpBInvX && tmpBulY == tmpBInvY) {
+						invaders.get(i).setDestroyed(true);
+						bullet.destroy();
+						kills++;
+					}
+				}
+			}
+			if(bullet.getY() < 0) {
+				bullet.destroy();
+			} else {
+				bullet.setY(bullet.getY());
+			}
+		}
 	}
-	
-	private class TAdapter extends KeyAdapter {
+    
+	private class TypeAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int x, y, key;

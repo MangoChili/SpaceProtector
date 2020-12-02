@@ -11,12 +11,12 @@ public class Invader extends Sprite {
 	private void initialInvader(int x, int y) {
 		this.x = x;
 		this.y = y;
-		var invaderSprite = "res/shuttle.png";
+		var invaderSprite = "src/SpaceProtector/res/shuttle.png";
 		var icon = new ImageIcon(invaderSprite);
 		setImage(icon.getImage());
 	}
 	
 	public void move(int step) {
-        this.x += step;
+		this.x += step;
 	}
 }
