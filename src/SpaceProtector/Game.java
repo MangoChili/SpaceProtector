@@ -194,17 +194,21 @@ public class Game extends JPanel {
 				tmpBInvX = invaders.get(i).getX();
 				tmpBInvY = invaders.get(i).getY();
 				if(invaders.get(i).isShow()) {
-					if(tmpBulX == tmpBInvX && tmpBulY == tmpBInvY) {
+					if(tmpBulX >= tmpBInvX-20 && tmpBulX <= tmpBInvX+20 && tmpBulY >= tmpBInvY-20 && tmpBulY <= tmpBInvY+20) {
 						invaders.get(i).setDestroyed(true);
 						bullet.destroy();
 						kills++;
+						if(kills == mission) {
+							start = false;
+							str = "Mission Acomplished!";
+						}
 					}
 				}
 			}
 			if(bullet.getY() < 0) {
 				bullet.destroy();
 			} else {
-				bullet.setY(bullet.getY());
+				bullet.setY(bullet.getY()-2);
 			}
 		}
 	}
