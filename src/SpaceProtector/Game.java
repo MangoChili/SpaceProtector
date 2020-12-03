@@ -1,9 +1,5 @@
 package SpaceProtector;
 
-import SpaceProtector.Protector;
-import SpaceProtector.Invader;
-import SpaceProtector.Bullet;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,7 +22,7 @@ public class Game extends JPanel {
 	int numCol = 3;
 	int invaderX = 120;
 	int invaderY = 10;
-	int mission = 10;
+	int mission = numRow * numCol;
 	
 	private Protector protector;
 	private List<Invader> invaders;
@@ -194,7 +190,7 @@ public class Game extends JPanel {
 				tmpBInvX = invaders.get(i).getX();
 				tmpBInvY = invaders.get(i).getY();
 				if(invaders.get(i).isShow()) {
-					if(tmpBulX >= tmpBInvX-20 && tmpBulX <= tmpBInvX+20 && tmpBulY >= tmpBInvY-20 && tmpBulY <= tmpBInvY+20) {
+					if(tmpBulX >= tmpBInvX && tmpBulX <= tmpBInvX+52 && tmpBulY >= tmpBInvY && tmpBulY <= tmpBInvY+52) {
 						invaders.get(i).setDestroyed(true);
 						bullet.destroy();
 						kills++;
@@ -208,7 +204,7 @@ public class Game extends JPanel {
 			if(bullet.getY() < 0) {
 				bullet.destroy();
 			} else {
-				bullet.setY(bullet.getY()-2);
+				bullet.setY(bullet.getY()-1);
 			}
 		}
 	}
