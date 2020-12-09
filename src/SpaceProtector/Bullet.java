@@ -12,7 +12,7 @@ public class Bullet extends Sprite {
 	}
 	
 	private void initialBullet(int x, int y) {
-		var bulletSprite = "res/laserBullet.png";
+		var bulletSprite = "src/SpaceProtector/res/laserBullet.png";
 		var icon = new ImageIcon(bulletSprite);
 		setImage(icon.getImage());
 		setX(x);

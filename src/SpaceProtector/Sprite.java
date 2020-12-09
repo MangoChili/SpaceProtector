@@ -38,7 +38,7 @@ public class Sprite {
         return y;
     }
 
-    public void distroy() {
+    public void destroy() {
         show = false;
     }
 
