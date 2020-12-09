@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class SpaceProtector extends JFrame {
 	
-	int BOARD_WIDTH = 360;
-	int BOARD_HEIGHT = 480;
+	int BOARD_WIDTH = 1024;
+	int BOARD_HEIGHT = 768;
 	
 	public SpaceProtector() {
 		initializeBoard();

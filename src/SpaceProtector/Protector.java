@@ -5,9 +5,9 @@ import javax.swing.ImageIcon;
 
 public class Protector extends Sprite {
 	
-	int INIT_X_COORD = 140;
-	int INIT_Y_COORD = 360;
-	int BOARD_WIDTH = 360;
+	int INIT_X_COORD = 512;
+	int INIT_Y_COORD = 650;
+	int BOARD_WIDTH = 1024;
 	
 	private int width;
 	int step;

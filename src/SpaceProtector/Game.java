@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Game extends JPanel {
-	int BOARD_WIDTH = 360;
-	int BOARD_HEIGHT = 480;
+	int BOARD_WIDTH = 1024;
+	int BOARD_HEIGHT = 768;
 	int numRow = 2;
 	int numCol = 3;
 	int invaderX = 120;
@@ -141,6 +141,9 @@ public class Game extends JPanel {
 		int tmpBulY;
 		int tmpBInvX;
 		int tmpBInvY;
+		int tmpInvX2;
+		int velocity;
+		int velocity2;
 		
 		if(kills == mission) {
 			start = false;
@@ -153,7 +156,7 @@ public class Game extends JPanel {
 		// invaders
 		for(int i = 0; i < invaders.size(); i++) {
 			tmpInvX = invaders.get(i).getX();
-			if(tmpInvX >= BOARD_WIDTH - 100 && pointIn != -1) {
+			if(tmpInvX >= BOARD_WIDTH - 100 && pointIn == 1) {
 				pointIn = -1;
 				Iterator<Invader> tmp1 = invaders.iterator();
 				while(tmp1.hasNext()) {
@@ -161,7 +164,7 @@ public class Game extends JPanel {
 					inv2.setY(inv2.getY() + 5);
 				}
 			}
-			if(tmpInvX <= 18 && pointIn != 1) {
+			if(tmpInvX <= 18 && pointIn == -1) {
 				pointIn = 1;
 				Iterator<Invader> tmp2 = invaders.iterator();
 				while(tmp2.hasNext()) {
@@ -175,10 +178,23 @@ public class Game extends JPanel {
 			Invader inv = tmp.next();
 			if(inv.isShow()) {
 				tmpInvY = inv.getY();
-				if(tmpInvY > 100) {
+				if(tmpInvY > 180) {
 					start = false;
 				}
+				tmpInvX2 = inv.getX();
+				velocity = pointIn;
+				velocity2 = pointIn;
+				// System.out.println(pointIn);
+				// System.out.println(tmpInvX2);
+				velocity = steeringFlee(velocity, tmpInvX2);
+				// System.out.println(velocity);
+				velocity2 = steeringArrive(velocity2, tmpInvX2);
+				// System.out.println(velocity2);
+				steeringFlocking(pointIn);
+				// System.out.println(pointIn);
 				inv.move(pointIn);
+				inv.move(velocity);
+				inv.move(velocity2);
 			}
 		}
 		
@@ -204,9 +220,57 @@ public class Game extends JPanel {
 			if(bullet.getY() < 0) {
 				bullet.destroy();
 			} else {
-				bullet.setY(bullet.getY()-1);
+				bullet.setY(bullet.getY()-2);
 			}
 		}
+	}
+	
+	// The Flee Steering Behavior helps invaders flee from the chasing of 
+	// protector. When the protector move around invaders, they will move
+	// in opposite direction, and accelerate for a while.
+	private int steeringFlee(int x, int tmpInvX) {
+		int tmpPtcX;
+		int steeringX;
+		tmpPtcX = protector.getX();
+		steeringX = 0;
+		if(x <= 0) {
+			if(tmpInvX < tmpPtcX && tmpInvX > tmpPtcX - 20) {
+				steeringX = -1;
+			}
+		} else if(x > 0) {
+			if(tmpInvX > tmpPtcX && tmpInvX < tmpPtcX + 20) {
+				steeringX = 1;
+			}
+		}
+		return steeringX;
+	}
+	
+	// The Arrive Steering Behavior actions when the protector shoot a bullet.
+	// When the protector shoots, invaders will still move in original direction,
+	// and slow down for a while.
+	private int steeringArrive(int x, int tmpInvX) {
+		int steeringX;
+		steeringX = 0;
+		if(bullet.isShow()) {	
+			int tmpBulX;
+			tmpBulX = bullet.getX();
+			if(tmpInvX < tmpBulX) {
+				steeringX = -1;
+			} else if(tmpInvX >= tmpBulX) {
+				steeringX = 1;
+			}
+		}
+		return steeringX;
+	}
+	
+	// The Flocking Steering Behavior actions when the protector move close to
+	// invaders, and it depends on the distance between the protector and
+	// invaders. If the group of invader is close to the protector, two wingmans
+	// gather to the lead plane, form a cohesion formation. If the group of 
+	// invader is far from the protector, two wingmans separated from the lead 
+	// plane, form a separation formation.
+	private void steeringFlocking(int x) {
+		
 	}
     
 	private void doGameCycle() {
