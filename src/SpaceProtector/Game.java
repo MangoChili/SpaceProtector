@@ -190,7 +190,7 @@ public class Game extends JPanel {
 				// System.out.println(velocity);
 				velocity2 = steeringArrive(velocity2, tmpInvX2);
 				// System.out.println(velocity2);
-				steeringFlocking(pointIn);
+				steeringFlocking(pointIn, tmpInvX2);
 				// System.out.println(pointIn);
 				inv.move(pointIn);
 				inv.move(velocity);
@@ -265,12 +265,44 @@ public class Game extends JPanel {
 	
 	// The Flocking Steering Behavior actions when the protector move close to
 	// invaders, and it depends on the distance between the protector and
-	// invaders. If the group of invader is close to the protector, two wingmans
+	// invaders. If the group of invader is far from the protector, two wingmans
 	// gather to the lead plane, form a cohesion formation. If the group of 
-	// invader is far from the protector, two wingmans separated from the lead 
+	// invader is close to the protector, two wingmans separated from the lead 
 	// plane, form a separation formation.
-	private void steeringFlocking(int x) {
-		
+	private void steeringFlocking(int x, int tmpInvX) {
+		int tmpPtcX;
+		int tmpPtcY;
+		int tmpInvY;
+		tmpPtcX = protector.getX();
+		tmpPtcY = protector.getY();
+		Iterator<Invader> tmpInv = invaders.iterator();
+		while(tmpInv.hasNext()) {
+			Invader inv = tmpInv.next();
+			if(inv.isShow()) {
+				tmpInvY = inv.getY();
+				if(tmpInvY <= tmpPtcY - 200) {
+					if(x <= 0) {
+						if(tmpInvX < tmpPtcX && tmpInv.hasNext()) {
+							x = 1;
+						}
+					} else if(x > 0) {
+						if(tmpInvX > tmpPtcX && !tmpInv.hasNext()) {
+							x = -1;
+						}
+					}
+				} else if(tmpInvY > tmpPtcY - 200) {
+					if(x <= 0) {
+						if(tmpInvX < tmpPtcX && tmpInv.hasNext()) {
+							x = -1;
+						}
+					} else if(x > 0) {
+						if(tmpInvX > tmpPtcX && !tmpInv.hasNext()) {
+							x = 1;
+						}
+					}
+				}
+			}
+		}
 	}
     
 	private void doGameCycle() {
