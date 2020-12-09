@@ -21,3 +21,17 @@ To compile use this command from the terminal<br />
 If everything works well then a new "SpaceProtector.class" file should be created.<br />
 To run the game that you've just compiled type the command below in terminal:<br />
 *java SpaceProtector*
+## File Structure
+Steering Behaviour Project<br />
+&nbsp;/- src<br />
+&nbsp;&nbsp;/- SpaceProtector<br />
+&nbsp;&nbsp;&nbsp;- Bullet.java<br />
+&nbsp;&nbsp;&nbsp;- Game.java<br />
+&nbsp;&nbsp;&nbsp;- Invader.java<br />
+&nbsp;&nbsp;&nbsp;- Protector.java<br />
+&nbsp;&nbsp;&nbsp;- SpaceProtector.java<br />
+&nbsp;&nbsp;&nbsp;- Sprite.java<br />
+&nbsp;&nbsp;&nbsp;/- res<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- shuttle.png<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- shuttle2.png<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- laserBullet.png
